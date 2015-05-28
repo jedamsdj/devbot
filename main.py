@@ -1,7 +1,19 @@
 __author__ = 'Devon'
 
 import os
-print os.environ['HOME']
+from twilio.rest import TwilioRestClient
 
-# using get will return `None` if a key is not present rather than raise a `KeyError`
-print os.environ.get('KEY_THAT_MIGHT_EXIST')
+
+# Access the environment variables for TWILIO and Google
+GOOGLE_SHEET_KEY = os.environ.get('GOOGLE_SHEET_KEY')
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
+
+
+# Send a text
+client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+client.messages.create(
+    to="15855904906",
+    from_=TWILIO_PHONE_NUMBER,
+    body="This is just a test.")
