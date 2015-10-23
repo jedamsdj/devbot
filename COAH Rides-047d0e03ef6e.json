@@ -1,0 +1,7 @@
+{
+  "private_key_id": "047d0e03ef6e47b22c03055c5b999dfe89fe6b4b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANU9X78I66JqMswR\nlklneXQI7tfsB2IlIQMgBGsdUhjAhI12aNqOaqN4gmMFVfleOktqpNUZQmWb4tgs\nN3hIgRjYr0rmohPpD31JGIm0WXHSzpwfKv6ykjYw2ErwZt+/sftqctnS3XAL4B3T\n9cB+1sx3bIgwVhGSuNutMW0y1o1XAgMBAAECgYAhQ0yfMRYIpMY9vPSTiLeSWR5g\nwim4rpACu8jUqKM4xzcmFfVvOk36J/820QtDNeakAwOpViJcVT/CdstEURMJ8wpW\n/NtsWVrcqFXiPK0HUbArp8cXyzYyMrVJ7oWdxe9SlbUVyFYybOD+c2+DQy50lmKJ\nI+dD0bIAz8WfJD7TgQJBAP0wHCA6mwPPk1Dhg25oYpxMz4et183xdQpu714ZtZd9\nZRr5pFMVAOOuvA6cVoTxSLtA1D7ba0S188yUzaFfvsECQQDXm63n+YJxIGlNETjx\nfqtt6Wmg9fz9q3ZHNC2szoWlKRR+goMeEjzYubmbIU2pa4SQvtvsdex44xCzZqLG\n4OoXAkAfkR8Ama34FKpOXD+RxWv+BsmdJfyRDbjE+z3W4qe0Yor3iQaG4UiCGqgR\nvkY/PwINbrDHwX2nTHRAHpFgvFpBAkEAzHE7Gs7VqG1iTAh7pUpGRYdheJYoGWU/\nV08bzFNcGHr2ius4ZwhGF/8sBvQyTua7ogDIStSasRomGObGjKxyawJBAJSyBRKD\n1zWEhZYG1tRwPILgBNVpOpfmdSE6w5KcEwYJ5EtTgnEIALNguUsdt+oeG5pbDMr9\nszKZZ0QajqQ9NUg\u003d\n-----END PRIVATE KEY-----\n",
+  "client_email": "182571732460-kbdn7s60d0tuhp4m3ogji0su7q5v52mm@developer.gserviceaccount.com",
+  "client_id": "182571732460-kbdn7s60d0tuhp4m3ogji0su7q5v52mm.apps.googleusercontent.com",
+  "type": "service_account"
+}
