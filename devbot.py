@@ -67,7 +67,7 @@ class Spreadsheet:
 
     def login(self):
         # Use OAuth2 to sign in to Google Sheets
-        json_key = json.load(open('COAH Rides-047d0e03ef6e.json'))
+        json_key = json.load(open('/home/pi/devbot/devbot-047d0e03ef6e.json'))
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
         gc = gspread.authorize(credentials)
