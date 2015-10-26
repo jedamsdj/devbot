@@ -29,7 +29,7 @@ class Spreadsheet:
         # Retrieve main sheet for parsing
         self.main_sheet = self.spreadsheet.worksheet(self.sheet_name)
         self.weekCol = None
-        self.numbers = self.get_phone_numbers()
+        self.numbers, self.names = self.get_phone_numbers()
         self.responses = self.get_responses()
         self.text_bool = self.get_text_flag()
 
@@ -133,17 +133,21 @@ class Spreadsheet:
 
     def get_phone_numbers(self):
         col = self.main_sheet.find('Cell Phone #').col
+        coln = self.main_sheet.find('Name').col
         numbers = self.main_sheet.col_values(col)
+        name = self.main_sheet.col_values(coln)
         numbers.pop(0)
+        name.pop(0)
 
         final_numbers = []
-        for number in numbers:
+        for i, number in enumerate(numbers):
             if not number:
                 break
             else:
                 final_numbers.append(format_number(number))
+                names[format_number(number)] = name[i]
 
-        return final_numbers
+        return final_numbers, names
 
     def get_response(self, number):
         return self.data[number]
@@ -212,6 +216,7 @@ class ResponseAI:
         self.sheet = sheet
         self.text = ''
         self.log = ''
+        self.name = self.sheet.name[fnumber]
 
     def get_response_from_member(self):
         recognized_text = False
@@ -231,7 +236,6 @@ class ResponseAI:
         if self.incoming_text.lower() == 'yes':
             self.text = "That's great! Respond with your name so we can add you to the spreadsheet."
             self.sheet.add_new_member(self.number, 'temp')
-            self.sheet.disable_text(self.number)
         else:
             self.text = self.sheet.messages['first text']
 
