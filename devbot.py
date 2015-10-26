@@ -217,7 +217,7 @@ class ResponseAI:
         self.sheet = sheet
         self.text = ''
         self.log = ''
-        self.name = self.sheet.name[fnumber]
+        self.name = self.sheet.names[fnumber]
 
     def get_response_from_member(self):
         recognized_text = False
