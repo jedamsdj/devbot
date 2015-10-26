@@ -140,6 +140,7 @@ class Spreadsheet:
         name.pop(0)
 
         final_numbers = []
+        names = []
         for i, number in enumerate(numbers):
             if not number:
                 break
