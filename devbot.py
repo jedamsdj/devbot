@@ -226,6 +226,7 @@ class ResponseAI:
                 self.text = self.sheet.messages['response text']
                 self.sheet.update_response(self.number, self.sheet.responses[key])
                 recognized_text = True
+                return
 
         if self.incoming_text.lower() == 'remove':
             self.text = self.sheet.admin_sheet.messages['removal']
