@@ -230,7 +230,7 @@ class ResponseAI:
     def get_response_from_nonmember(self):
         if self.incoming_text.lower() == 'yes':
             self.text = "That's great! Respond with your name so we can add you to the spreadsheet."
-            self.sheet.add_new_member('temp', self.number)
+            self.sheet.add_new_member(self.number, 'temp')
             self.sheet.disable_text(self.number)
         else:
             self.text = self.sheet.messages['first text']
