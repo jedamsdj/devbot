@@ -18,6 +18,7 @@ class Spreadsheet:
     admin_number = []
     debug_flag = []
     responses = []
+    valid_responses = []
 
     def __init__(self):
         # Login to Google and create the worksheet object
@@ -56,8 +57,10 @@ class Spreadsheet:
                 row = self.get_row_for_number(number)
                 exist = True
                 self.main_sheet.update_cell(row, 1, name)
+                self.names[number] = name
         if not exist:
             self.numbers.append(number)
+            self.names[number] = name
             self.data[number] = None
 
             formatted_number = number[1:4] + '-' + number[4:7] + '-' + number[7:11]
@@ -67,7 +70,7 @@ class Spreadsheet:
 
     def login(self):
         # Use OAuth2 to sign in to Google Sheets
-        json_key = json.load(open('/home/pi/devbot/devbot-047d0e03ef6e.json'))
+        json_key = json.load(open('devbot-047d0e03ef6e.json'))
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
         gc = gspread.authorize(credentials)
@@ -117,7 +120,7 @@ class Spreadsheet:
         # 1.2 Input Key
         key = admin.col_values(1)[ind_12:]
         output = admin.col_values(2)[ind_12:]
-        self.responses = dict(zip(key, output))
+        self.valid_responses = dict(zip(key, output))
 
     def get_responses(self):
         try:
@@ -217,19 +220,20 @@ class ResponseAI:
         self.sheet = sheet
         self.text = ''
         self.log = ''
-        self.name = self.sheet.names[fnumber]
+        if self.sheet.exist(self.number):
+            self.name = self.sheet.names[self.number]
+        print ""
 
     def get_response_from_member(self):
         recognized_text = False
-        for key in self.sheet.responses:
+        for key in self.sheet.valid_responses:
             if self.incoming_text.lower() == key:
                 self.text = self.sheet.messages['response text']
-                self.sheet.update_response(self.number, self.sheet.responses[key])
+                self.sheet.update_response(self.number, self.sheet.valid_responses[key])
                 recognized_text = True
-                return
 
         if self.incoming_text.lower() == 'remove':
-            self.text = self.sheet.admin_sheet.messages['removal']
+            self.text = self.sheet.messages['removal']
             self.sheet.disable_text(self.number)
         elif not recognized_text:
             self.text = self.sheet.messages['unrecognized response']
@@ -256,9 +260,33 @@ def main():
     sheet = Spreadsheet()
     sheet.debug_flag = True
     
-    ai = ResponseAI()
-    sheet.ai("15855904906","Devon Jedamski")
-    sheet.disable_text("15855904906")
+    ai = ResponseAI(sheet.admin_number, sheet, "hi")
+    ai.get_response_from_nonmember()
+    print "user: hi"
+    print "devbot: " + ai.execute_response()
+
+    ai = ResponseAI(sheet.admin_number, sheet, "yes")
+    ai.get_response_from_nonmember()
+    print "user: yes"
+    print "devbot: " + ai.execute_response()
+
+    ai = ResponseAI(sheet.admin_number, sheet, "John Doe")
+    ai.add_member_to_spreadsheet()
+    print "user: John Doe"
+    print "devbot: " + ai.execute_response()
+
+    ai = ResponseAI(sheet.admin_number, sheet, "9am")
+    ai.get_response_from_member()
+    print "user: 9am"
+    print "devbot: " + ai.execute_response()
+
+    ai = ResponseAI(sheet.admin_number, sheet, "remove")
+    ai.get_response_from_member()
+    print "user: remove"
+    print "devbot: " + ai.execute_response()
+
+    phone = Phone()
+    phone.send_text(sheet.admin_number, ai.execute_response())
 
 
 if __name__ == "__main__":
