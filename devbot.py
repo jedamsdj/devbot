@@ -94,27 +94,32 @@ class Spreadsheet:
     def parse_admin_sheet(self):
         # Get the Admin spreadsheet
         admin = self.spreadsheet.worksheet('Admin')
+        admin_values = admin.get_all_values()
 
-        # Extract the indices for the different sections
-        ind_10 = admin.find("1.0 - Main").row
-        ind_11 = admin.find("1.1 - Response Tree").row
-        ind_12 = admin.find("1.2 - Input Key").row
+        # Parse the list
+        for i, row in enumerate(admin_values):
+            if row[0] == "1.0 - Main":
+                ind_10 = i
+            if row[0] == "1.1 - Response Tree":
+                ind_11 = i
+            if row[0] == "1.2 - Input Key":
+                ind_12 = i
 
         # 1.0 Main Section
-        self.sheet_name = admin.cell(ind_10+1, 2).value
-        self.current_date = admin.cell(ind_10+2, 2).value
-        self.admin_number = admin.cell(ind_10+3, 2).value
-        self.debug_flag = admin.cell(ind_10+4, 2).value
+        self.sheet_name = admin_values[ind_10+1][1]
+        self.current_date = admin_values[ind_10+2][1]
+        self.admin_number = admin_values[ind_10+3][1]
+        self.debug_flag = admin_values[ind_10+4][1]
 
         # 1.1 Response Tree Section
         self.messages = {
-            'standard message f':    admin.cell(ind_11+1, 2).value,
-            'standard message s':    admin.cell(ind_11+2, 2).value,
-            'first text':            admin.cell(ind_11+3, 2).value,
-            'removal':               admin.cell(ind_11+4, 2).value,
-            'response text':         admin.cell(ind_11+5, 2).value,
-            'unrecognized response': admin.cell(ind_11+6, 2).value,
-            'new member':            admin.cell(ind_11+7, 2).value,
+            'standard message f':    admin_values[ind_11+1][1],
+            'standard message s':    admin_values[ind_11+2][1],
+            'first text':            admin_values[ind_11+3][1],
+            'removal':               admin_values[ind_11+4][1],
+            'response text':         admin_values[ind_11+5][1],
+            'unrecognized response': admin_values[ind_11+6][1],
+            'new member':            admin_values[ind_11+7][1],
         }
 
         # 1.2 Input Key
