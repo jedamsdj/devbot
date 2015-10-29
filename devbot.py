@@ -2,6 +2,7 @@ import os
 import json
 import gspread
 import twilio
+import time
 from oauth2client.client import SignedJwtAssertionCredentials
 
 __author__ = 'Devon'
@@ -29,15 +30,14 @@ class Spreadsheet:
 
         # Retrieve main sheet for parsing
         self.main_sheet = self.spreadsheet.worksheet(self.sheet_name)
+        self.main_values = self.main_sheet.get_all_values()
         self.weekCol = None
         self.numbers, self.names = self.get_phone_numbers()
         self.responses = self.get_responses()
         self.text_bool = self.get_text_flag()
 
         # Parse the numbers and responses into a dict
-        self.data = {}
-        for ind, number in enumerate(self.numbers):
-            self.data[number] = self.responses[ind]
+        self.data = dict(zip(self.numbers, self.responses))
 
     def exist(self, number):
         for num in self.numbers:
@@ -70,7 +70,7 @@ class Spreadsheet:
 
     def login(self):
         # Use OAuth2 to sign in to Google Sheets
-        json_key = json.load(open('/home/pi/devbot/devbot-047d0e03ef6e.json'))
+        json_key = json.load(open('devbot-047d0e03ef6e.json'))
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
         gc = gspread.authorize(credentials)
@@ -79,7 +79,7 @@ class Spreadsheet:
         return gc.open_by_key(self.sheetKey)
 
     def get_text_flag(self):
-        col = self.main_sheet.find('Text').col
+        col = self.main_values[0].index('Text')+1
 
         texting = self.main_sheet.col_values(col)[1:len(self.numbers)+1]
         text_bool = []
@@ -123,8 +123,9 @@ class Spreadsheet:
         }
 
         # 1.2 Input Key
-        key = admin.col_values(1)[ind_12:]
-        output = admin.col_values(2)[ind_12:]
+        input_key = admin_values[ind_12+1:]
+        key = [item[0] for item in input_key]
+        output = [item[1] for item in input_key]
         self.valid_responses = dict(zip(key, output))
 
     def get_responses(self):
@@ -140,8 +141,8 @@ class Spreadsheet:
         return responses[1:len(self.numbers)+1]
 
     def get_phone_numbers(self):
-        col = self.main_sheet.find('Cell Phone #').col
-        coln = self.main_sheet.find('Name').col
+        col = self.main_values[0].index('Cell Phone #')+1
+        coln = self.main_values[0].index('Name')+1
         numbers = self.main_sheet.col_values(col)
         name = self.main_sheet.col_values(coln)
         numbers.pop(0)

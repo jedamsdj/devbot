@@ -1,4 +1,4 @@
-from devbot import Spreadsheet, ResponseAI
+from devbot import Spreadsheet, ResponseAI, Phone
 import sys
 
 number = sys.argv[1]
@@ -20,7 +20,10 @@ try:
             response.get_response_from_member()
     else:
         response.get_response_from_nonmember()
-    print response.execute_response()
+    text_out = response.execute_response()
 
-except IOError:
-    print 'Sorry, something went wrong. Text back in a little bit!'
+except IOError as e:
+    text_out = 'Sorry, something went wrong. Text back in a little bit!'
+
+phone = Phone()
+phone.send_text(number, text_out)
