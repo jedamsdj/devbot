@@ -23,7 +23,7 @@ try:
     text_out = response.execute_response()
 
 except IOError as e:
-    text_out = 'Sorry, something went wrong. Text back in a little bit!'
+    text_out = 'Sorry, Google is misbehaving. Text back in a little bit or bother Devon to fix it.'
 
 phone = Phone()
 phone.send_text(number, text_out)
