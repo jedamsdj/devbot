@@ -70,7 +70,10 @@ class Spreadsheet:
 
     def login(self):
         # Use OAuth2 to sign in to Google Sheets
-        json_key = json.load(open('/home/pi/devbot/devbot-047d0e03ef6e.json'))
+        try:
+            json_key = json.load(open('/home/pi/devbot/devbot-047d0e03ef6e.json'))
+        except:
+            json_key = json.load(open('devbot-047d0e03ef6e.json'))
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
         gc = gspread.authorize(credentials)
@@ -173,6 +176,9 @@ class Spreadsheet:
         for ind, response in enumerate(self.responses):
             if response is None and self.text_bool[ind]:
                 send_text.append(self.numbers[ind])
+
+        if self.debug_flag == 'TRUE':
+            send_text = [format_number(self.admin_number)]
 
         return send_text
 
